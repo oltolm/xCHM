@@ -73,8 +73,12 @@
 #define strcasecmp _stricmp
 #define strncasecmp _strnicmp
 #else
+#ifndef strcasecmp
 #define strcasecmp stricmp
+#endif
+#ifndef strncasecmp
 #define strncasecmp strnicmp
+#endif
 #endif
 #else
 /* basic Linux system includes */
@@ -93,7 +97,7 @@
         EnterCriticalSection(&(a));                     \
     } while(0)
 #define CHM_RELEASE_LOCK(a) do {                        \
-        EnterCriticalSection(&(a));                     \
+        LeaveCriticalSection(&(a));                     \
     } while(0)
 
 #else
@@ -180,7 +184,7 @@ typedef unsigned long           UInt64;
 #endif
 
 /* GCC */
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(WIN32)
 #define memcmp __builtin_memcmp
 #define memcpy __builtin_memcpy
 #define strlen __builtin_strlen
@@ -698,8 +702,8 @@ static Int64 _chm_fetch_bytes(struct chmFile *h,
 #ifdef CHM_USE_WIN32IO
     /* NOTE: this might be better done with CreateFileMapping, et cetera... */
     {
-        DWORD origOffsetLo=0, origOffsetHi=0;
-        DWORD offsetLo, offsetHi;
+        LONG origOffsetLo=0, origOffsetHi=0;
+        LONG offsetLo, offsetHi;
         DWORD actualLen=0;
 
         /* awkward Win32 Seek/Tell */
