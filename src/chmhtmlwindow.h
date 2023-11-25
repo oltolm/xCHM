@@ -22,6 +22,7 @@
 
 #include <chmfinddialog.h>
 #include <memory>
+#include <wx/dnd.h>
 #include <wx/html/htmlwin.h>
 #include <wx/menu.h>
 #include <wx/notebook.h>
@@ -41,6 +42,14 @@ enum {
 
 //! Minimize dependencies. Forward declaration.
 class CHMFrame;
+
+class CHMDropTarget : public wxFileDropTarget {
+    CHMFrame* m_frame;
+
+public:
+    CHMDropTarget(CHMFrame* frame) : m_frame(frame) {}
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames) override;
+};
 
 /*!
   \class wxHtmlWindow
