@@ -32,6 +32,9 @@
 #include <XmlRpc.h>
 #endif
 
+class CHMApp;
+wxDECLARE_APP(CHMApp);
+
 // Forward declaration.
 class CHMFrame;
 
@@ -56,6 +59,7 @@ public:
 private:
     //! Our entry point into the application.
     bool OnInit() override;
+    int OnExit() override;
 
 #ifdef __WXMAC__
     //! Respond to Apple Event for opening a document
@@ -83,6 +87,12 @@ private:
 #ifdef WITH_LIBXMLRPC
     DECLARE_EVENT_TABLE()
 #endif
+
+    bool _useSingleClick;
+
+public:
+    bool IsUseSingleClick();
+    void SetUseSingleClick(bool value);
 };
 
 #endif // __CHMAPP_H_

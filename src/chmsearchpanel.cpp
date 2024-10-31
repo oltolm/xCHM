@@ -17,6 +17,7 @@
   MA 02110-1301, USA.
 */
 
+#include "chmapp.h"
 #include <algorithm>
 #include <chmhtmlnotebook.h>
 #include <chminputstream.h>
@@ -203,9 +204,20 @@ bool CHMSearchPanel::TitleSearch(const wxString& title, const wxString& text, bo
     return processedTokens;
 }
 
-void CHMSearchPanel::OnSearchSel(wxListEvent&)
+void CHMSearchPanel::OnSearchSel(wxListEvent& event)
 {
-    _results->LoadSelected();
+    event.Skip();
+
+    if (wxGetApp().IsUseSingleClick())
+        _results->LoadSelected(event.GetIndex());
+}
+
+void CHMSearchPanel::OnItemActivated(wxListEvent& event)
+{
+    event.Skip();
+
+    if (!wxGetApp().IsUseSingleClick())
+        _results->LoadSelected(event.GetIndex());
 }
 
 void CHMSearchPanel::Reset()
@@ -241,6 +253,7 @@ void CHMSearchPanel::GetConfig()
 
 BEGIN_EVENT_TABLE(CHMSearchPanel, wxPanel)
 EVT_LIST_ITEM_SELECTED(ID_Results, CHMSearchPanel::OnSearchSel)
+EVT_LIST_ITEM_ACTIVATED(ID_Results, CHMSearchPanel::OnItemActivated)
 EVT_BUTTON(ID_SearchButton, CHMSearchPanel::OnSearch)
 EVT_TEXT_ENTER(ID_SearchText, CHMSearchPanel::OnSearch)
 END_EVENT_TABLE()

@@ -76,6 +76,7 @@ enum {
     ID_NewTab,
     ID_FullScreen,
     ID_ToggleToolbar,
+    ID_UseSingleClink,
     ID_TreeCtrl = 1000,
 };
 
@@ -195,8 +196,11 @@ protected:
     //! Called when the user chooses a bookmark from the wxChoice control.
     void OnBookmarkSel(wxCommandEvent& event);
 
-    //! Called when an item in the contents tree is clicked.
+    //! Called when an item in the contents tree is selected.
     void OnSelectionChanged(wxTreeEvent& event);
+
+    //! Called when an item in the contents tree is activated.
+    void OnItemActivated(wxTreeEvent& event);
 
     //! Cleanup code. This saves the window position and last open dir.
     void OnCloseWindow(wxCloseEvent& event);
@@ -209,6 +213,10 @@ protected:
 
     //! Called when the user types Ctrl-N.
     void OnNewTab(wxCommandEvent& event);
+
+    void OnUseSingleClick(wxCommandEvent& event);
+
+    bool IsUseSingleClick(wxCommandEvent& event);
 
 private:
     //! Helper. Creates the menu.
@@ -228,6 +236,8 @@ private:
 
     //! Helper. Saves exit information (size, history, etc.)
     void SaveExitInfo();
+
+    void activateItem(wxTreeItemId id);
 
 private:
     CHMHtmlNotebook*                    _nbhtml;

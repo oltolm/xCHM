@@ -21,7 +21,7 @@
   MA 02110-1301, USA.
 */
 
-#include <algorithm>
+#include "chmapp.h"
 #include <chmfontdialog.h>
 #include <chmframe.h>
 #include <chmhtmlnotebook.h>
@@ -35,11 +35,13 @@
 #include <wx/artprov.h>
 #include <wx/bitmap.h>
 #include <wx/busyinfo.h>
+#include <wx/config.h>
 #include <wx/filesys.h>
 #include <wx/fs_mem.h>
 #include <wx/imaglist.h>
 #include <wx/mimetype.h>
 #include <wx/statbox.h>
+#include <wx/treebase.h>
 #include <wx/utils.h>
 #include <wx/version.h>
 
@@ -64,6 +66,7 @@
 #define CLOSETAB_HELP _("Close the current tab")
 #define NEWTAB_HELP _("Open a new tab")
 #define REGISTER_EXTENSION_HELP _("Associate the .chm file extension with xCHM.")
+#define USE_SINGLE_CLICK_HELP _("Use single click instead of double click for selecting items.")
 
 namespace {
 
@@ -407,11 +410,24 @@ void CHMFrame::OnBookmarkSel(wxCommandEvent& event)
     _nbhtml->LoadPageInCurrentView(wxT("file:") + chmf->ArchiveName() + wxT("#xchm:/") + *url);
 }
 
+void CHMFrame::OnItemActivated(wxTreeEvent& event)
+{
+    event.Skip();
+    if (!wxGetApp().IsUseSingleClick())
+        activateItem(event.GetItem());
+}
+
 void CHMFrame::OnSelectionChanged(wxTreeEvent& event)
 {
-    auto id   = event.GetItem();
-    auto chmf = CHMInputStream::GetCache();
+    event.Skip();
+    if (wxGetApp().IsUseSingleClick())
+        activateItem(event.GetItem());
+}
 
+void CHMFrame::activateItem(wxTreeItemId id)
+{
+    auto chmf = CHMInputStream::GetCache();
+    
     if (id == _tcl->GetRootItem() || !chmf || !id.IsOk())
         return;
 
@@ -670,6 +686,8 @@ wxMenuBar* CHMFrame::CreateMenu()
     auto menuView = new wxMenu;
     menuView->Append(ID_FullScreen, _("Toggle &fullscreen\tF11"), FULLSCREEN_HELP);
     menuView->Append(ID_ToggleToolbar, _("Toggle &toolbar\tAlt-T"), TOGGLE_TOOLBAR_HELP);
+    menuView->AppendCheckItem(ID_UseSingleClink, _("Use &single click"), USE_SINGLE_CLICK_HELP)
+        ->Check(wxGetApp().IsUseSingleClick());
 
     auto menuBar = new wxMenuBar;
     menuBar->Append(_menuFile, _("&File"));
@@ -910,6 +928,11 @@ FontSizesArray CHMFrame::ComputeFontSizes(int size) const
     return sizes;
 }
 
+void CHMFrame::OnUseSingleClick(wxCommandEvent& event)
+{
+    wxGetApp().SetUseSingleClick(event.IsChecked());
+}
+
 BEGIN_EVENT_TABLE(CHMFrame, wxFrame)
 EVT_MENU(ID_Quit, CHMFrame::OnQuit)
 EVT_MENU(ID_About, CHMFrame::OnAbout)
@@ -930,9 +953,11 @@ EVT_MENU(ID_NewTab, CHMFrame::OnNewTab)
 EVT_MENU(ID_CopySelection, CHMFrame::OnCopySelection)
 EVT_MENU(ID_FullScreen, CHMFrame::OnToggleFullScreen)
 EVT_MENU(ID_ToggleToolbar, CHMFrame::OnToggleToolbar)
+EVT_MENU(ID_UseSingleClink, CHMFrame::OnUseSingleClick)
 EVT_BUTTON(ID_Add, CHMFrame::OnAddBookmark)
 EVT_BUTTON(ID_Remove, CHMFrame::OnRemoveBookmark)
 EVT_TREE_SEL_CHANGED(ID_TreeCtrl, CHMFrame::OnSelectionChanged)
+EVT_TREE_ITEM_ACTIVATED(ID_TreeCtrl, CHMFrame::OnItemActivated)
 EVT_COMBOBOX(ID_Bookmarks, CHMFrame::OnBookmarkSel)
 EVT_TEXT_ENTER(ID_Bookmarks, CHMFrame::OnBookmarkSel)
 EVT_CLOSE(CHMFrame::OnCloseWindow)

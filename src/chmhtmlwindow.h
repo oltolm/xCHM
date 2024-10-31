@@ -23,6 +23,7 @@
 #include <chmfinddialog.h>
 #include <memory>
 #include <wx/dnd.h>
+#include <wx/event.h>
 #include <wx/html/htmlwin.h>
 #include <wx/menu.h>
 #include <wx/notebook.h>
@@ -140,6 +141,9 @@ protected:
 
     //! Called when the 'Toggle fullscreen' is selected from the popup menu.
     void OnToggleFullScreen(wxCommandEvent& event);
+
+    //! Called when the 'Use single click' is selected from the popup menu.
+    void OnUseSingleClick(wxCommandEvent& event);
 
 protected:
     //! Called when the user right clicks the HTML window.

@@ -154,6 +154,8 @@ bool CHMApp::OnInit()
         config.Read(wxT("/Sash/leftMargin"), &sashPos);
     }
 
+    config.Read(wxT("/UseSingleClick"), &_useSingleClick);
+
     wxString fullAppPath;
 
     if (argc > 0)
@@ -226,6 +228,23 @@ void CHMApp::WatchForXMLRPC(wxTimerEvent&)
 }
 #endif
 
+bool CHMApp::IsUseSingleClick()
+{
+    return _useSingleClick;
+}
+
+void CHMApp::SetUseSingleClick(bool value)
+{
+    _useSingleClick = value;
+}
+
+int CHMApp::OnExit()
+{
+    wxConfig config(wxT("xchm"));
+    config.Write("/UseSingleClick", _useSingleClick);
+    return 0;
+}
+
 #ifdef WITH_LIBXMLRPC
 BEGIN_EVENT_TABLE(CHMApp, wxApp)
 EVT_TIMER(TIMER_ID, CHMApp::WatchForXMLRPC)
@@ -233,4 +252,4 @@ END_EVENT_TABLE()
 #endif
 
 // Apparently this macro gets main() pumping.
-IMPLEMENT_APP(CHMApp)
+wxIMPLEMENT_APP(CHMApp);

@@ -78,8 +78,11 @@ protected:
     */
     void OnSearch(wxCommandEvent& event);
 
-    //! This gets called when the user clicks on a result.
+    //! This gets called when the user selects a result.
     void OnSearchSel(wxListEvent& event);
+
+    //! This gets called when the user activates a result.
+    void OnItemActivated(wxListEvent& event);
 
 private:
     //! Helper. Searches through the tree recursively.

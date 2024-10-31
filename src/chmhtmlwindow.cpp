@@ -28,6 +28,7 @@
 #include <hhcparser.h>
 #include <memory>
 #include <wx/clipbrd.h>
+#include <wx/event.h>
 #include <wx/filename.h>
 #include <wx/log.h>
 #include <wx/uri.h>
