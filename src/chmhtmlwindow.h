@@ -142,9 +142,6 @@ protected:
     //! Called when the 'Toggle fullscreen' is selected from the popup menu.
     void OnToggleFullScreen(wxCommandEvent& event);
 
-    //! Called when the 'Use single click' is selected from the popup menu.
-    void OnUseSingleClick(wxCommandEvent& event);
-
 protected:
     //! Called when the user right clicks the HTML window.
     void OnRightClick(wxMouseEvent& event);

@@ -214,10 +214,6 @@ protected:
     //! Called when the user types Ctrl-N.
     void OnNewTab(wxCommandEvent& event);
 
-    void OnUseSingleClick(wxCommandEvent& event);
-
-    bool IsUseSingleClick(wxCommandEvent& event);
-
 private:
     //! Helper. Creates the menu.
     wxMenuBar* CreateMenu();

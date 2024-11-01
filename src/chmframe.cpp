@@ -685,8 +685,6 @@ wxMenuBar* CHMFrame::CreateMenu()
     auto menuView = new wxMenu;
     menuView->Append(ID_FullScreen, _("Toggle &fullscreen\tF11"), FULLSCREEN_HELP);
     menuView->Append(ID_ToggleToolbar, _("Toggle &toolbar\tAlt-T"), TOGGLE_TOOLBAR_HELP);
-    menuView->AppendCheckItem(ID_UseSingleClink, _("Use &single click"), USE_SINGLE_CLICK_HELP)
-        ->Check(wxGetApp().IsUseSingleClick());
 
     auto menuBar = new wxMenuBar;
     menuBar->Append(_menuFile, _("&File"));
@@ -927,11 +925,6 @@ FontSizesArray CHMFrame::ComputeFontSizes(int size) const
     return sizes;
 }
 
-void CHMFrame::OnUseSingleClick(wxCommandEvent& event)
-{
-    wxGetApp().SetUseSingleClick(event.IsChecked());
-}
-
 BEGIN_EVENT_TABLE(CHMFrame, wxFrame)
 EVT_MENU(ID_Quit, CHMFrame::OnQuit)
 EVT_MENU(ID_About, CHMFrame::OnAbout)
@@ -952,7 +945,6 @@ EVT_MENU(ID_NewTab, CHMFrame::OnNewTab)
 EVT_MENU(ID_CopySelection, CHMFrame::OnCopySelection)
 EVT_MENU(ID_FullScreen, CHMFrame::OnToggleFullScreen)
 EVT_MENU(ID_ToggleToolbar, CHMFrame::OnToggleToolbar)
-EVT_MENU(ID_UseSingleClink, CHMFrame::OnUseSingleClick)
 EVT_BUTTON(ID_Add, CHMFrame::OnAddBookmark)
 EVT_BUTTON(ID_Remove, CHMFrame::OnRemoveBookmark)
 EVT_TREE_SEL_CHANGED(ID_TreeCtrl, CHMFrame::OnSelectionChanged)
