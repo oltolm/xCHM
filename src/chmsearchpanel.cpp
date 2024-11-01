@@ -17,13 +17,13 @@
   MA 02110-1301, USA.
 */
 
-#include "chmapp.h"
+#include "chmhtmlwindow.h"
+#include "chmhtmlnotebook.h"
+#include "chminputstream.h"
+#include "chmlistctrl.h"
+#include "chmsearchpanel.h"
+#include "hhcparser.h"
 #include <algorithm>
-#include <chmhtmlnotebook.h>
-#include <chminputstream.h>
-#include <chmlistctrl.h>
-#include <chmsearchpanel.h>
-#include <hhcparser.h>
 #include <vector>
 #include <wx/config.h>
 #include <wx/sizer.h>
@@ -32,7 +32,7 @@
 #include <wx/wx.h>
 
 CHMSearchPanel::CHMSearchPanel(wxWindow* parent, wxTreeCtrl* topics, CHMHtmlNotebook* nbhtml)
-    : wxPanel(parent), _tcl(topics)
+    : wxPanel(parent), _tcl(topics), _nbhtml(nbhtml)
 {
     auto sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -208,16 +208,15 @@ void CHMSearchPanel::OnSearchSel(wxListEvent& event)
 {
     event.Skip();
 
-    if (wxGetApp().IsUseSingleClick())
-        _results->LoadSelected(event.GetIndex());
+    _results->LoadSelected(event.GetIndex());
 }
 
 void CHMSearchPanel::OnItemActivated(wxListEvent& event)
 {
     event.Skip();
 
-    if (!wxGetApp().IsUseSingleClick())
-        _results->LoadSelected(event.GetIndex());
+    _results->LoadSelected(event.GetIndex());
+    _nbhtml->GetCurrentPage()->SetFocus();
 }
 
 void CHMSearchPanel::Reset()

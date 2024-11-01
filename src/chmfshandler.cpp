@@ -17,8 +17,8 @@
   MA 02110-1301, USA.
 */
 
-#include <chmfshandler.h>
-#include <chminputstream.h>
+#include "chmfshandler.h"
+#include "chminputstream.h"
 
 CHMFSHandler::~CHMFSHandler()
 {

@@ -20,10 +20,10 @@
   MA 02110-1301, USA.
 */
 
-#include <chmapp.h>
-#include <chmfile.h>
-#include <chmframe.h>
-#include <chmfshandler.h>
+#include "chmapp.h"
+#include "chmfile.h"
+#include "chmframe.h"
+#include "chmfshandler.h"
 #include <wx/config.h>
 #include <wx/filefn.h>
 #include <wx/fs_inet.h>

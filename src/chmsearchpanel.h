@@ -104,6 +104,7 @@ private:
     wxCheckBox*  _titles;
     wxButton*    _search;
     CHMListCtrl* _results;
+    CHMHtmlNotebook* _nbhtml;
 
 private:
     DECLARE_EVENT_TABLE()

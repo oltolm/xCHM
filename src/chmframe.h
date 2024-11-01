@@ -237,7 +237,7 @@ private:
     //! Helper. Saves exit information (size, history, etc.)
     void SaveExitInfo();
 
-    void activateItem(wxTreeItemId id);
+    void LoadSelected(wxTreeItemId id);
 
 private:
     CHMHtmlNotebook*                    _nbhtml;

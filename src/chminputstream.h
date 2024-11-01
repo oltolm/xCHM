@@ -20,7 +20,7 @@
 #ifndef __CHMINPUTSTREAM_H_
 #define __CHMINPUTSTREAM_H_
 
-#include <chmfile.h>
+#include "chmfile.h"
 #include <memory>
 #include <wx/stream.h>
 

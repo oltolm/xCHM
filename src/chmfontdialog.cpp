@@ -17,8 +17,8 @@
   MA 02110-1301, USA.
 */
 
-#include <chmfontdialog.h>
-#include <chmframe.h>
+#include "chmfontdialog.h"
+#include "chmframe.h"
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>

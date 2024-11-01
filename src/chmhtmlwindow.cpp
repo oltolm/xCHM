@@ -21,11 +21,10 @@
   MA 02110-1301, USA.
 */
 
-#include <chmframe.h>
-#include <chmhtmlnotebook.h>
-#include <chmhtmlwindow.h>
-#include <chminputstream.h>
-#include <hhcparser.h>
+#include "chmframe.h"
+#include "chmhtmlnotebook.h"
+#include "chmhtmlwindow.h"
+#include "hhcparser.h"
 #include <memory>
 #include <wx/clipbrd.h>
 #include <wx/event.h>

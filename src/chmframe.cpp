@@ -22,15 +22,15 @@
 */
 
 #include "chmapp.h"
-#include <chmfontdialog.h>
-#include <chmframe.h>
-#include <chmhtmlnotebook.h>
-#include <chmhtmlwindow.h>
-#include <chmindexpanel.h>
-#include <chminputstream.h>
-#include <chmlistctrl.h>
-#include <chmsearchpanel.h>
-#include <hhcparser.h>
+#include "chmfontdialog.h"
+#include "chmframe.h"
+#include "chmhtmlnotebook.h"
+#include "chmhtmlwindow.h"
+#include "chmindexpanel.h"
+#include "chminputstream.h"
+#include "chmlistctrl.h"
+#include "chmsearchpanel.h"
+#include "hhcparser.h"
 #include <wx/accel.h>
 #include <wx/artprov.h>
 #include <wx/bitmap.h>
@@ -413,18 +413,17 @@ void CHMFrame::OnBookmarkSel(wxCommandEvent& event)
 void CHMFrame::OnItemActivated(wxTreeEvent& event)
 {
     event.Skip();
-    if (!wxGetApp().IsUseSingleClick())
-        activateItem(event.GetItem());
+    LoadSelected(event.GetItem());
+    _nbhtml->GetCurrentPage()->SetFocus();
 }
 
 void CHMFrame::OnSelectionChanged(wxTreeEvent& event)
 {
     event.Skip();
-    if (wxGetApp().IsUseSingleClick())
-        activateItem(event.GetItem());
+    LoadSelected(event.GetItem());
 }
 
-void CHMFrame::activateItem(wxTreeItemId id)
+void CHMFrame::LoadSelected(wxTreeItemId id)
 {
     auto chmf = CHMInputStream::GetCache();
     

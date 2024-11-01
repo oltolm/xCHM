@@ -17,13 +17,13 @@
   MA 02110-1301, USA.
 */
 
-#include "chmapp.h"
-#include <chmhtmlwindow.h>
-#include <chmindexpanel.h>
-#include <chmlistctrl.h>
+#include "chmhtmlnotebook.h"
+#include "chmhtmlwindow.h"
+#include "chmindexpanel.h"
+#include "chmlistctrl.h"
 #include <wx/sizer.h>
 
-CHMIndexPanel::CHMIndexPanel(wxWindow* parent, CHMHtmlNotebook* nbhtml) : wxPanel(parent)
+CHMIndexPanel::CHMIndexPanel(wxWindow* parent, CHMHtmlNotebook* nbhtml) : _nbhtml(nbhtml), wxPanel(parent)
 {
     auto sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -51,17 +51,16 @@ void CHMIndexPanel::SetNewFont(const wxFont& font)
 void CHMIndexPanel::OnIndexSel(wxListEvent& event)
 {
     event.Skip();
-    
-    if (_navigate && wxGetApp().IsUseSingleClick())
+    if (_navigate)
         _lc->LoadSelected(event.GetIndex());
 }
 
 void CHMIndexPanel::OnItemActivated(wxListEvent& event)
 {
     event.Skip();
-
-    if (_navigate && !wxGetApp().IsUseSingleClick())
+    if (_navigate)
         _lc->LoadSelected(event.GetIndex());
+    _nbhtml->GetCurrentPage()->SetFocus();
 }
 
 void CHMIndexPanel::OnText(wxCommandEvent&)

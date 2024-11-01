@@ -19,9 +19,9 @@
   MA 02110-1301, USA.
 */
 
-#include <chmframe.h>
-#include <chmhtmlnotebook.h>
-#include <chmhtmlwindow.h>
+#include "chmframe.h"
+#include "chmhtmlnotebook.h"
+#include "chmhtmlwindow.h"
 
 CHMHtmlNotebook::CHMHtmlNotebook(wxWindow* parent, wxTreeCtrl* tc, const wxString& normalFont,
                                  const wxString& fixedFont, int fontSize, CHMFrame* frame)

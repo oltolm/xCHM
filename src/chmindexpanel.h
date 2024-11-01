@@ -28,8 +28,6 @@
 class CHMHtmlNotebook;
 class CHMListCtrl;
 
-wxDECLARE_APP(CHMApp);
-
 /*!
   \class wxPanel
   \brief generic wxWidgets panel widget class.
@@ -77,6 +75,7 @@ private:
     wxTextCtrl*  _text;
     CHMListCtrl* _lc {nullptr};
     bool         _navigate {true};
+    CHMHtmlNotebook* _nbhtml;
 
 private:
     DECLARE_EVENT_TABLE()

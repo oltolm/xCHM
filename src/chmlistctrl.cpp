@@ -19,9 +19,9 @@
   MA 02110-1301, USA.
 */
 
-#include <chmhtmlnotebook.h>
-#include <chminputstream.h>
-#include <chmlistctrl.h>
+#include "chmhtmlnotebook.h"
+#include "chminputstream.h"
+#include "chmlistctrl.h"
 #include <wx/settings.h>
 
 // Helper
@@ -71,9 +71,6 @@ void CHMListCtrl::AddPairItem(const wxString& title, const wxString& url)
 
 void CHMListCtrl::LoadSelected(long item)
 {
-    if (item == -1L || item > static_cast<long>(_items.GetCount()) - 1)
-        return;
-
     auto chmf = CHMInputStream::GetCache();
 
     if (chmf) {

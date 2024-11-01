@@ -17,7 +17,7 @@
   MA 02110-1301, USA.
 */
 
-#include <chminputstream.h>
+#include "chminputstream.h"
 
 /*----------------------------------------------------------------------
  * class CHMInputStream static members

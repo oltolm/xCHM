@@ -20,7 +20,7 @@
 #ifndef __CHMHTMLWINDOW_H_
 #define __CHMHTMLWINDOW_H_
 
-#include <chmfinddialog.h>
+#include "chmfinddialog.h"
 #include <memory>
 #include <wx/dnd.h>
 #include <wx/event.h>
