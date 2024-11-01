@@ -97,6 +97,7 @@ void CHMListCtrl::FindBestMatch(const wxString& title)
         if (!_items[i]->_title.Left(title.length()).CmpNoCase(title)) {
             EnsureVisible(i);
             Select(i);
+            Focus(i);
             break;
         }
     }
