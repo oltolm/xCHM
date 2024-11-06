@@ -36,7 +36,8 @@ CHMIndexPanel::CHMIndexPanel(wxWindow* parent, CHMHtmlNotebook* nbhtml) : wxPane
 
     auto label = new wxStaticText(this, ID_IndexLabel, _("Type in the key&word to find:"));
     _text = new wxTextCtrl(this, ID_SearchIndex, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-    _lc   = new CHMListCtrl(this, nbhtml, ID_IndexClicked);
+    _text->Connect(wxEVT_CHAR, wxKeyEventHandler(CHMIndexPanel::OnTextChar), nullptr, this);
+    _lc = new CHMListCtrl(this, nbhtml, ID_IndexClicked);
 
     sizer->Add(label, 0, wxEXPAND | wxALL, 2);
     sizer->Add(_text, 0, wxEXPAND | wxALL, 2);
@@ -85,6 +86,22 @@ void CHMIndexPanel::OnTextEnter(wxCommandEvent&)
     _lc->LoadSelected(_lc->GetFocusedItem());
     _nbhtml->GetCurrentPage()->SetFocusFromKbd();
     _navigate = true;
+}
+
+void CHMIndexPanel::OnTextChar(wxKeyEvent& event)
+{
+    long focused = _lc->GetFocusedItem();
+    if (event.GetKeyCode() == WXK_DOWN) {
+        _lc->Select(std::min<long>(_lc->GetItemCount() - 1, focused + 1));
+        _lc->Focus(std::min<long>(_lc->GetItemCount() - 1, focused + 1));
+        _lc->SetFocusFromKbd();
+    } else if (event.GetKeyCode() == WXK_UP) {
+        _lc->Select(std::max(0L, focused - 1));
+        _lc->Focus(std::max(0L, focused - 1));
+        _lc->SetFocusFromKbd();
+    }
+
+    event.Skip();
 }
 
 BEGIN_EVENT_TABLE(CHMIndexPanel, wxPanel)
