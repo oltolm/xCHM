@@ -45,6 +45,7 @@ enum {
     ID_SearchText = 1024,
     ID_SearchButton,
     ID_Results,
+    ID_SearchLabel
 };
 
 //! Custom built search panel.
@@ -70,6 +71,9 @@ public:
 
     //! Sets the font.
     void SetNewFont(const wxFont& font);
+
+    //! Sets the focus to the textbox.
+    void SetFocusToTextBox() { _text->SetFocusFromKbd(); }
 
 protected:
     /*!

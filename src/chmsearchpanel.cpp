@@ -39,6 +39,7 @@ CHMSearchPanel::CHMSearchPanel(wxWindow* parent, wxTreeCtrl* topics, CHMHtmlNote
     SetAutoLayout(true);
     SetSizer(sizer);
 
+    auto label = new wxStaticText(this, ID_SearchLabel, _("Type in the &word(s) to search for:"));
     _text = new wxTextCtrl(this, ID_SearchText, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 
     _partial = new wxCheckBox(this, wxID_ANY, _("Get partial matches"));
@@ -52,6 +53,7 @@ CHMSearchPanel::CHMSearchPanel(wxWindow* parent, wxTreeCtrl* topics, CHMHtmlNote
 #endif
     _results = new CHMListCtrl(this, nbhtml, ID_Results);
 
+    sizer->Add(label, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 2);
     sizer->Add(_text, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 2);
     sizer->Add(_partial, 0, wxLEFT | wxRIGHT | wxTOP, 10);
     sizer->Add(_titles, 0, wxLEFT | wxRIGHT, 10);
