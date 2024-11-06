@@ -76,6 +76,9 @@ enum {
     ID_NewTab,
     ID_FullScreen,
     ID_ToggleToolbar,
+    ID_SwitchToContents,
+    ID_SwitchToIndex,
+    ID_SwitchToSearch,
     ID_TreeCtrl = 1000,
 };
 
@@ -180,6 +183,15 @@ protected:
 
     //! Called when the toolbar is being toggled
     void OnToggleToolbar(wxCommandEvent& event);
+
+    //! Called when the user type Alt-C.
+    void OnSwitchToContents(wxCommandEvent& event);
+
+    //! Called when the user type Alt-N.
+    void OnSwitchToIndex(wxCommandEvent& event);
+
+    //! Called when the user type Alt-S.
+    void OnSwitchToSearch(wxCommandEvent& event);
 
     //! Called when the user clicks on the Add button.
     void OnAddBookmark(wxCommandEvent& event);
