@@ -21,6 +21,7 @@
 #define __CHMINDEXPANEL_H_
 
 #include <wx/app.h>
+#include <wx/event.h>
 #include <wx/listctrl.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>
@@ -37,6 +38,7 @@ class CHMListCtrl;
 enum {
     ID_SearchIndex = 1500,
     ID_IndexClicked,
+    ID_IndexLabel
 };
 
 //! Custom panel for displaying the .chm index (if available).
@@ -60,6 +62,9 @@ public:
 
     //! Sets the font.
     void SetNewFont(const wxFont& font);
+
+    //! Sets the focus to the text box.
+    void SetFocusToTextBox() { _text->SetFocusFromKbd(); }
 
 protected:
     //! This gets called when the user selects a list item.

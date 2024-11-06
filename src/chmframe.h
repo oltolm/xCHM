@@ -24,12 +24,14 @@
 #include <memory>
 #include <wx/combobox.h>
 #include <wx/docview.h>
+#include <wx/event.h>
 #include <wx/font.h>
 #include <wx/html/htmprint.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>
 #include <wx/splitter.h>
 #include <wx/thread.h>
+#include <wx/toplevel.h>
 #include <wx/treectrl.h>
 #include <wx/wx.h>
 
@@ -79,6 +81,7 @@ enum {
     ID_SwitchToContents,
     ID_SwitchToIndex,
     ID_SwitchToSearch,
+    ID_FocusTextBox,
     ID_TreeCtrl = 1000,
 };
 
@@ -184,14 +187,17 @@ protected:
     //! Called when the toolbar is being toggled
     void OnToggleToolbar(wxCommandEvent& event);
 
-    //! Called when the user type Alt-C.
+    //! Called when the user types Alt-C.
     void OnSwitchToContents(wxCommandEvent& event);
 
-    //! Called when the user type Alt-N.
+    //! Called when the user types Alt-N.
     void OnSwitchToIndex(wxCommandEvent& event);
 
-    //! Called when the user type Alt-S.
+    //! Called when the user types Alt-S.
     void OnSwitchToSearch(wxCommandEvent& event);
+
+    //! Called when the user types Alt-W.
+    void OnFocusTextBox(wxCommandEvent&);
 
     //! Called when the user clicks on the Add button.
     void OnAddBookmark(wxCommandEvent& event);

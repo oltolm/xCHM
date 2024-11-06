@@ -142,7 +142,7 @@ CHMFrame::CHMFrame(const wxString& title, const wxString& booksDir, const wxPoin
                                     {wxACCEL_CTRL, ']', ID_Forward},         {wxACCEL_CTRL, '[', ID_Back},
                                     {wxACCEL_CTRL, WXK_F4, ID_CloseTab},     {wxACCEL_CTRL, 'Q', ID_Quit},
                                     {wxACCEL_ALT, 'C', ID_SwitchToContents}, {wxACCEL_ALT, 'N', ID_SwitchToIndex},
-                                    {wxACCEL_ALT, 'S', ID_SwitchToSearch}};
+                                    {wxACCEL_ALT, 'S', ID_SwitchToSearch},   {wxACCEL_ALT, 'W', ID_FocusTextBox}};
 
     wxAcceleratorTable accel(sizeof(entries) / sizeof(wxAcceleratorEntry), entries);
     SetAcceleratorTable(accel);
@@ -956,6 +956,17 @@ void CHMFrame::ToggleFullScreen(bool onlyIfFullScreenOn)
     OnToggleFullScreen(dummy);
 }
 
+void CHMFrame::OnFocusTextBox(wxCommandEvent&)
+{
+    if (_nb->GetSelection() == 1) {
+        wxCommandEvent dummy;
+        _cip->SetFocusToTextBox();
+    } else if (_nb->GetSelection() == 2) {
+        wxCommandEvent dummy;
+        _csp->SetFocusToTextBox();
+    }
+}
+
 FontSizesArray CHMFrame::ComputeFontSizes(int size) const
 {
     FontSizesArray sizes;
@@ -989,6 +1000,7 @@ EVT_MENU(ID_ToggleToolbar, CHMFrame::OnToggleToolbar)
 EVT_MENU(ID_SwitchToContents, CHMFrame::OnSwitchToContents)
 EVT_MENU(ID_SwitchToIndex, CHMFrame::OnSwitchToIndex)
 EVT_MENU(ID_SwitchToSearch, CHMFrame::OnSwitchToSearch)
+EVT_MENU(ID_FocusTextBox, CHMFrame::OnFocusTextBox)
 EVT_BUTTON(ID_Add, CHMFrame::OnAddBookmark)
 EVT_BUTTON(ID_Remove, CHMFrame::OnRemoveBookmark)
 EVT_TREE_SEL_CHANGED(ID_TreeCtrl, CHMFrame::OnSelectionChanged)

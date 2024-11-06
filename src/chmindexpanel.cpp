@@ -21,7 +21,10 @@
 #include <chmhtmlwindow.h>
 #include <chmindexpanel.h>
 #include <chmlistctrl.h>
+#include <wx/aui/auibook.h>
+#include <wx/event.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
 #include <wx/textctrl.h>
 
 CHMIndexPanel::CHMIndexPanel(wxWindow* parent, CHMHtmlNotebook* nbhtml) : wxPanel(parent), _nbhtml(nbhtml)
@@ -31,9 +34,11 @@ CHMIndexPanel::CHMIndexPanel(wxWindow* parent, CHMHtmlNotebook* nbhtml) : wxPane
     SetAutoLayout(true);
     SetSizer(sizer);
 
+    auto label = new wxStaticText(this, ID_IndexLabel, _("Type in the key&word to find:"));
     _text = new wxTextCtrl(this, ID_SearchIndex, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
     _lc   = new CHMListCtrl(this, nbhtml, ID_IndexClicked);
 
+    sizer->Add(label, 0, wxEXPAND | wxALL, 2);
     sizer->Add(_text, 0, wxEXPAND | wxALL, 2);
     sizer->Add(_lc, 1, wxALL | wxEXPAND, 2);
 }
