@@ -138,9 +138,11 @@ CHMFrame::CHMFrame(const wxString& title, const wxString& booksDir, const wxPoin
       _sashPos(sashPosition), _fullAppPath(fullAppPath), _loadTopics(loadTopics), _loadIndex(loadIndex)
 {
 #if wxUSE_ACCEL
-    wxAcceleratorEntry entries[]
-        = {{wxACCEL_CTRL, 'F', ID_FindInPage}, {wxACCEL_CTRL, 'C', ID_CopySelection}, {wxACCEL_CTRL, ']', ID_Forward},
-           {wxACCEL_CTRL, '[', ID_Back},       {wxACCEL_CTRL, WXK_F4, ID_CloseTab},   {wxACCEL_CTRL, 'Q', ID_Quit}};
+    wxAcceleratorEntry entries[] = {{wxACCEL_CTRL, 'F', ID_FindInPage},      {wxACCEL_CTRL, 'C', ID_CopySelection},
+                                    {wxACCEL_CTRL, ']', ID_Forward},         {wxACCEL_CTRL, '[', ID_Back},
+                                    {wxACCEL_CTRL, WXK_F4, ID_CloseTab},     {wxACCEL_CTRL, 'Q', ID_Quit},
+                                    {wxACCEL_ALT, 'C', ID_SwitchToContents}, {wxACCEL_ALT, 'N', ID_SwitchToIndex},
+                                    {wxACCEL_ALT, 'S', ID_SwitchToSearch}};
 
     wxAcceleratorTable accel(sizeof(entries) / sizeof(wxAcceleratorEntry), entries);
     SetAcceleratorTable(accel);
@@ -187,9 +189,9 @@ CHMFrame::CHMFrame(const wxString& title, const wxString& booksDir, const wxPoin
 
     _cip = new CHMIndexPanel(_nb, _nbhtml);
 
-    _nb->AddPage(contents, _("Contents"));
-    _nb->AddPage(_cip, _("Index"));
-    _nb->AddPage(_csp, _("Search"));
+    _nb->AddPage(contents, _("&Contents"));
+    _nb->AddPage(_cip, _("I&ndex"));
+    _nb->AddPage(_csp, _("&Search"));
 
     _sw->Initialize(_nbhtml);
     _nbhtml->GetCurrentPage()->SetFocusFromKbd();
@@ -367,6 +369,21 @@ void CHMFrame::OnToggleFullScreen(wxCommandEvent&)
 void CHMFrame::OnToggleToolbar(wxCommandEvent&)
 {
     _tb->Show(!_tb->IsShown());
+}
+
+void CHMFrame::OnSwitchToContents(wxCommandEvent&)
+{
+    _nb->SetSelection(0);
+}
+
+void CHMFrame::OnSwitchToIndex(wxCommandEvent&)
+{
+    _nb->SetSelection(1);
+}
+
+void CHMFrame::OnSwitchToSearch(wxCommandEvent&)
+{
+    _nb->SetSelection(2);
 }
 
 void CHMFrame::OnAddBookmark(wxCommandEvent&)
@@ -714,7 +731,7 @@ wxMenuBar* CHMFrame::CreateMenu()
     menuBar->Append(_menuFile, _("&File"));
     menuBar->Append(menuView, _("&View"));
     menuBar->Append(menuEdit, _("&Edit"));
-    menuBar->Append(menuHistory, _("Hi&story"));
+    menuBar->Append(menuHistory, _("His&tory"));
     menuBar->Append(menuHelp, _("&Help"));
 
     return menuBar;
@@ -969,6 +986,9 @@ EVT_MENU(ID_NewTab, CHMFrame::OnNewTab)
 EVT_MENU(ID_CopySelection, CHMFrame::OnCopySelection)
 EVT_MENU(ID_FullScreen, CHMFrame::OnToggleFullScreen)
 EVT_MENU(ID_ToggleToolbar, CHMFrame::OnToggleToolbar)
+EVT_MENU(ID_SwitchToContents, CHMFrame::OnSwitchToContents)
+EVT_MENU(ID_SwitchToIndex, CHMFrame::OnSwitchToIndex)
+EVT_MENU(ID_SwitchToSearch, CHMFrame::OnSwitchToSearch)
 EVT_BUTTON(ID_Add, CHMFrame::OnAddBookmark)
 EVT_BUTTON(ID_Remove, CHMFrame::OnRemoveBookmark)
 EVT_TREE_SEL_CHANGED(ID_TreeCtrl, CHMFrame::OnSelectionChanged)
@@ -976,5 +996,5 @@ EVT_TREE_ITEM_ACTIVATED(ID_TreeCtrl, CHMFrame::OnItemActivated)
 EVT_COMBOBOX(ID_Bookmarks, CHMFrame::OnBookmarkSel)
 EVT_TEXT_ENTER(ID_Bookmarks, CHMFrame::OnBookmarkSel)
 EVT_CLOSE(CHMFrame::OnCloseWindow)
-EVT_CHAR(CHMFrame::OnChar)
+EVT_CHAR_HOOK(CHMFrame::OnChar)
 END_EVENT_TABLE()
