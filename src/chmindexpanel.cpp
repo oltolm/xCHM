@@ -68,7 +68,7 @@ void CHMIndexPanel::OnItemActivated(wxListEvent& event)
     event.Skip();
 
     if (_navigate)
-        _lc->LoadSelected(event.GetIndex());
+        _lc->LoadActivated(event.GetIndex());
     _nbhtml->GetCurrentPage()->SetFocus();
 }
 

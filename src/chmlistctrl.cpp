@@ -22,8 +22,82 @@
 #include <chmhtmlnotebook.h>
 #include <chminputstream.h>
 #include <chmlistctrl.h>
+#include <vector>
+#include <wx/aui/auibook.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
 #include <wx/listbase.h>
 #include <wx/settings.h>
+#include <wx/stattext.h>
+
+enum Columns { COL_TITLE };
+
+enum { ID_TOPICS_LIST = 1000, ID_SHOW_BUTTON };
+
+struct TopicsDialog : public wxDialog {
+    TopicsDialog(wxWindow* parent, wxWindowID id, const wxString& title, const std::vector<wxString> urls)
+        : wxDialog(parent, id, _("Topics found"))
+    {
+        auto sizer = new wxBoxSizer(wxVERTICAL);
+        sizer->Add(new wxStaticText(this, wxID_ANY, _("Click on a topic and then on \"Show\"")));
+        _listView = new wxListView(this, ID_TOPICS_LIST);
+        sizer->Add(_listView, 0, wxEXPAND);
+
+        wxListItem info;
+        info.SetId(COL_TITLE);
+        info.SetText(_("Title"));
+        _listView->InsertColumn(0, info);
+
+        auto buttonSizer  = new wxBoxSizer(wxHORIZONTAL);
+        auto showButton   = new wxButton(this, ID_SHOW_BUTTON, _("Show"));
+        auto cancelButton = new wxButton(this, wxID_CANCEL);
+        buttonSizer->Add(showButton);
+        buttonSizer->Add(cancelButton);
+        sizer->Add(buttonSizer);
+
+        SetSizerAndFit(sizer);
+
+        int i = 0;
+        for ([[maybe_unused]] const auto& topic : urls) {
+            _listView->InsertItem(i, title);
+            ++i;
+        }
+    }
+
+    void OnActivated(wxListEvent& event);
+    void OnShowButton(wxCommandEvent& event);
+    void OnCancelButton(wxCommandEvent& event);
+
+    wxListView* _listView;
+    long        _selected;
+
+private:
+    DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(TopicsDialog, wxDialog)
+EVT_LIST_ITEM_ACTIVATED(ID_TOPICS_LIST, TopicsDialog::OnActivated)
+EVT_BUTTON(ID_SHOW_BUTTON, TopicsDialog::OnShowButton)
+EVT_BUTTON(wxID_CANCEL, TopicsDialog::OnCancelButton)
+END_EVENT_TABLE()
+
+void TopicsDialog::OnShowButton(wxCommandEvent&)
+{
+    _selected = _listView->GetFirstSelected();
+    EndModal(wxOK);
+}
+
+void TopicsDialog::OnCancelButton(wxCommandEvent&)
+{
+    _selected = wxNOT_FOUND;
+    EndModal(wxCANCEL);
+}
+
+void TopicsDialog::OnActivated(wxListEvent& event)
+{
+    _selected = event.GetIndex();
+    EndModal(wxOK);
+}
 
 // Helper
 
@@ -70,15 +144,31 @@ void CHMListCtrl::AddPairItem(const wxString& title, const wxString& url)
     _items.Add(new CHMListPairItem(title, url));
 }
 
-void CHMListCtrl::LoadSelected(long item)
+void CHMListCtrl::AddPairItem(CHMListPairItem* item)
+{
+    _items.Add(item);
+}
+
+void CHMListCtrl::LoadActivated(long item)
+{
+    if (_items[item]->_urls.size() > 1) {
+        TopicsDialog dlg(this, wxID_ANY, _items[item]->_title, _items[item]->_urls);
+        if (dlg.ShowModal() == wxOK)
+            LoadSelected(item, dlg._selected);
+    } else {
+        LoadSelected(item);
+    }
+}
+
+void CHMListCtrl::LoadSelected(long item, long url)
 {
     auto chmf = CHMInputStream::GetCache();
 
     if (chmf) {
-        auto fname = _items[item]->_url;
+        auto fname = _items[item]->_urls[url];
 
         if (!fname.StartsWith(wxT("file:")))
-            fname = wxT("file:") + chmf->ArchiveName() + wxT("#xchm:/") + _items[item]->_url;
+            fname = wxT("file:") + chmf->ArchiveName() + wxT("#xchm:/") + _items[item]->_urls[url];
 
         _nbhtml->LoadPageInCurrentView(fname);
     }
