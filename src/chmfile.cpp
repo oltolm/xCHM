@@ -21,6 +21,7 @@
   MA 02110-1301, USA.
 */
 
+#include "chmlistctrl.h"
 #include <assert.h>
 #include <chmfile.h>
 #include <chmlistctrl.h>
@@ -340,7 +341,7 @@ void CHMFile::RecurseLoadBTOC(UCharVector& topidx, UCharVector& topics, UCharVec
 }
 
 bool CHMFile::GetItem(UCharVector& topics, UCharVector& strings, UCharVector& urltbl, UCharVector& urlstr,
-                      uint32_t index, wxTreeCtrl* tree, CHMListCtrl* list, const wxString& idxName, int level,
+                      uint32_t index, wxTreeCtrl* tree, CHMListPairItem* list, const wxString& idxName, int level,
                       bool local)
 {
     static wxTreeItemId   parents[TREE_BUF_SIZE];
@@ -415,7 +416,8 @@ bool CHMFile::GetItem(UCharVector& topics, UCharVector& strings, UCharVector& ur
         if (!value.empty() && tname.IsEmpty())
             tname = EMPTY_INDEX;
 
-        list->AddPairItem(tname, tvalue);
+        list->_title = tname;
+        list->_urls.push_back(tvalue);
     }
 
     return true;
@@ -529,18 +531,20 @@ bool CHMFile::BinaryIndex(CHMListCtrl& toBuild, const wxCSConv& cv)
                 } while (tmp != 0);
 
             } else {
+                auto item = new CHMListPairItem();
                 for (uint32_t i = 0; i < numTopics && spaceLeft > freeSpace; ++i) {
                     if (bt_ui.length < offset + sizeof(uint32_t))
                         return items != 0;
 
                     auto index = UINT32_FROM_ARRAY(&btree[offset]);
 
-                    GetItem(topics, strings, urltbl, urlstr, index, nullptr, &toBuild, name, 0, false);
+                    GetItem(topics, strings, urltbl, urlstr, index, nullptr, item, name, 0, false);
                     ++items;
 
                     offset += sizeof(uint32_t);
                     spaceLeft -= sizeof(uint32_t);
                 }
+                toBuild.AddPairItem(item);
             }
 
             if (bt_ui.length < offset + 8)

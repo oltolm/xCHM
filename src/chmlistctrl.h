@@ -33,12 +33,13 @@ class CHMHtmlNotebook;
 //! Item to store in the virtual list control
 struct CHMListPairItem {
     //! Trivial constructor
-    CHMListPairItem(const wxString& title, const wxString& url) : _title(title), _url(url) {}
+    CHMListPairItem() {}
+    CHMListPairItem(const wxString& title, const wxString& url) : _title(title), _urls {url} {}
 
     //! This will show up in the list.
     wxString _title;
     //! This is what the title points to.
-    wxString _url;
+    std::vector<wxString> _urls;
 };
 
 //! Declare a wxWidgets sorted array
@@ -84,8 +85,13 @@ public:
      */
     void AddPairItem(const wxString& title, const wxString& url);
 
+    void AddPairItem(CHMListPairItem*);
+
     //! Loads the page that corresponds to the item currently selected.
-    void LoadSelected(long item);
+    void LoadSelected(long item, long url = 0);
+
+    //! Loads the page that corresponds to the item currently activated.
+    void LoadActivated(long item);
 
     //! Should be called each time the list control's state changes.
     void UpdateUI();

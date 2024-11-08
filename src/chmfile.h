@@ -20,6 +20,7 @@
 #ifndef __CHMFILE_H_
 #define __CHMFILE_H_
 
+#include "chmlistctrl.h"
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -243,7 +244,7 @@ private:
 
     //! Retrieve the data (name/URL) for a single entry (TOC or index)
     bool GetItem(UCharVector& topics, UCharVector& strings, UCharVector& urltbl, UCharVector& urlstr, uint32_t index,
-                 wxTreeCtrl* tree, CHMListCtrl* list, const wxString& idxName, int level, bool local);
+                 wxTreeCtrl* tree, CHMListPairItem* list, const wxString& idxName, int level, bool local);
 
     //! Get the binary index (if available)
     bool BinaryIndex(CHMListCtrl& toBuild, const wxCSConv& cv);
