@@ -21,7 +21,6 @@
   MA 02110-1301, USA.
 */
 
-#include <algorithm>
 #include <chmfontdialog.h>
 #include <chmframe.h>
 #include <chmhtmlnotebook.h>

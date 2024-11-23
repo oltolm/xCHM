@@ -233,4 +233,4 @@ END_EVENT_TABLE()
 #endif
 
 // Apparently this macro gets main() pumping.
-IMPLEMENT_APP(CHMApp)
+wxIMPLEMENT_APP(CHMApp);
