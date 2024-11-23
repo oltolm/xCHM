@@ -20,7 +20,6 @@
 #include <chmlistctrl.h>
 #include <ctype.h>
 #include <hhcparser.h>
-#include <map>
 #include <stdlib.h>
 #include <wx/wx.h>
 #include <wxstringutils.h>
