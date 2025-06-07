@@ -23,8 +23,7 @@ endif()
 if(USE_STATIC)
   set(wxWidgets_USE_STATIC ON)
 endif()
-find_package(wxWidgets REQUIRED COMPONENTS core base aui html net)
-include(${wxWidgets_USE_FILE})
+find_package(wxWidgets CONFIG REQUIRED COMPONENTS core base aui html net)
 
 # gtk
 if(UNIX)
@@ -61,7 +60,7 @@ if(WIN32)
   target_sources(xchm PRIVATE rc/xchm.rc)
 endif()
 
-target_link_libraries(xchm PRIVATE ${wxWidgets_LIBRARIES} ${GTK2_LIBRARIES} ${GTK_LIBRARIES})
+target_link_libraries(xchm PRIVATE wxWidgets::wxWidgets ${GTK2_LIBRARIES} ${GTK_LIBRARIES})
 target_compile_definitions(xchm PRIVATE UNICODE _UNICODE ENABLE_BUILTIN_CHMLIB)
 target_include_directories(xchm PRIVATE src art)
 target_compile_options(xchm PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:-std=c++14;-W;-Wall;-Wno-ignored-qualifiers;-Wno-cast-function-type>")
