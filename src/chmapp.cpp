@@ -87,6 +87,10 @@ bool CHMApp::OnInit()
     auto     id = -1L;
     wxString file;
 
+#if wxCHECK_VERSION(3, 3, 0)
+    SetAppearance(Appearance::System);
+#endif
+
 #if wxCHECK_VERSION(3, 1, 1)
     wxStandardPaths::Get().SetFileLayout(wxStandardPaths::FileLayout_XDG);
 #endif
