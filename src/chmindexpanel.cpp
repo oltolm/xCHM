@@ -36,7 +36,7 @@ CHMIndexPanel::CHMIndexPanel(wxWindow* parent, CHMHtmlNotebook* nbhtml) : wxPane
 
     auto label = new wxStaticText(this, ID_IndexLabel, _("Type in the key&word to find:"));
     _text = new wxTextCtrl(this, ID_SearchIndex, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-    _text->Connect(wxEVT_CHAR, wxKeyEventHandler(CHMIndexPanel::OnTextChar), nullptr, this);
+    _text->Bind(wxEVT_CHAR, &CHMIndexPanel::OnTextChar, this);
     _lc = new CHMListCtrl(this, nbhtml, ID_IndexClicked);
 
     sizer->Add(label, 0, wxEXPAND | wxALL, 2);

@@ -35,7 +35,7 @@ enum Columns { COL_TITLE };
 enum { ID_TOPICS_LIST = 1000, ID_SHOW_BUTTON };
 
 struct TopicsDialog : public wxDialog {
-    TopicsDialog(wxWindow* parent, wxWindowID id, const wxString& title, const std::vector<wxString> urls)
+    TopicsDialog(wxWindow* parent, wxWindowID id, const wxString& title, const std::vector<wxString>& urls)
         : wxDialog(parent, id, _("Topics found"))
     {
         auto sizer = new wxBoxSizer(wxVERTICAL);
